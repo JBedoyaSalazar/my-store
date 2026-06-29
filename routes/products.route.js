@@ -32,4 +32,17 @@ router.get("/:id", (req, res) => {
     }
 });
 
+router.post("/", (req, res) => {
+    const {name, price, image} = req.body;
+    res.json({
+        message: "Product created",
+        data: {
+            id: faker.number.int(),
+            name,
+            price,
+            image
+        },
+    })
+})
+
 export  {router};
