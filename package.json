@@ -13,8 +13,11 @@
     "keywords": [],
     "author": "",
     "license": "MIT",
-    "type": "commonjs",
+    "type": "module",
     "devDependencies": {
         "prettier": "^3.9.3"
+    },
+    "dependencies": {
+        "express": "^5.2.1"
     }
 }
