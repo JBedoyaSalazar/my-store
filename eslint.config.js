@@ -3,53 +3,43 @@ import globals from "globals";
 import prettier from "eslint-config-prettier";
 
 export default [
-  {
-    ignores: [
-      "node_modules/**",
-      "coverage/**",
-      "dist/**"
-    ]
-  },
-
-  js.configs.recommended,
-
-  {
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: globals.node
+    {
+        ignores: ["node_modules/**", "coverage/**", "dist/**"],
     },
 
-    rules: {
-      "no-unused-vars": [
-        "warn",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_"
-        }
-      ],
+    js.configs.recommended,
 
-      "prefer-const": "error",
+    {
+        languageOptions: {
+            ecmaVersion: "latest",
+            sourceType: "module",
+            globals: globals.node,
+        },
 
-      "no-var": "error",
+        rules: {
+            "no-unused-vars": [
+                "warn",
+                {
+                    argsIgnorePattern: "^_",
+                    varsIgnorePattern: "^_",
+                },
+            ],
 
-      "eqeqeq": [
-        "error",
-        "always"
-      ],
+            "prefer-const": "error",
 
-      "curly": [
-        "error",
-        "all"
-      ],
+            "no-var": "error",
 
-      "object-shorthand": "error",
+            eqeqeq: ["error", "always"],
 
-      "prefer-template": "error",
+            curly: ["error", "all"],
 
-      "no-duplicate-imports": "error"
-    }
-  },
+            "object-shorthand": "error",
 
-  prettier
+            "prefer-template": "error",
+
+            "no-duplicate-imports": "error",
+        },
+    },
+
+    prettier,
 ];
