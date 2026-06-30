@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import boom from "@hapi/boom";
 
 export class ProductsService {
 
@@ -16,6 +17,7 @@ export class ProductsService {
                 name: faker.commerce.productName(),
                 price: parseFloat(faker.commerce.price()),
                 image: faker.image.url(),
+                isBLocked: faker.datatype.boolean()
             });
         }
     }
@@ -38,7 +40,17 @@ export class ProductsService {
     }
 
     async findOne(id){
-        return this.products.find(product => product.id === id);
+        const product = this.products.find(product => product.id === id);
+
+        if(!product){
+            throw boom.notFound("Product not found");
+        }
+
+        if(product.isBLocked){
+            throw boom.conflict("Product is blocked");
+        }
+
+        return product;
     }
 
     async update(id, data){
@@ -47,7 +59,7 @@ export class ProductsService {
             this.products[productIndex] = { ...this.products[productIndex], ...data };
             return this.products[productIndex];
         }
-        throw new Error("Product not found");
+        throw boom.notFound("Product not found");
     }
 
     async delete(id){
@@ -55,6 +67,6 @@ export class ProductsService {
         if (productIndex !== -1) {
             return this.products.splice(productIndex, 1)[0];
         }
-        throw new Error("Product not found");
+        throw boom.notFound("Product not found");
     }
 }

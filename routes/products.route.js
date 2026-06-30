@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     })
 })
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req, res, next) => {
     try {
         const { id } = req.params
         const body = req.body;
@@ -42,14 +42,12 @@ router.patch("/:id", async (req, res) => {
             data: updatedProduct
         })
     } catch (error) {
-        res.status(404).json({
-            error: error.message
-        })
+        next(error);
     }
 
 })
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const { id } = req.params
         const deletedProduct = await productsService.delete(id);
@@ -58,9 +56,7 @@ router.delete("/:id", async (req, res) => {
             data: deletedProduct
         })
     } catch (error) {
-        res.status(404).json({
-            error: error.message
-        })
+        next(error);
     }
 })
 
