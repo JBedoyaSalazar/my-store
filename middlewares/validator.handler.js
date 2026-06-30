@@ -4,7 +4,7 @@ export function validatorHandler(schema, property) {
     return (req, res, next) => {
         const { error } = schema.validate(req[property]);
         if (error) {
-            boom.badRequest(error);
+            return next(boom.badRequest(error.details[0].message));
         }
         next();
     };

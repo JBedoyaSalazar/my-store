@@ -16,7 +16,7 @@ export class ProductsService {
                 name: faker.commerce.productName(),
                 price: parseFloat(faker.commerce.price()),
                 image: faker.image.url(),
-                isBLocked: faker.datatype.boolean(),
+                isBlocked: faker.datatype.boolean(),
             });
         }
     }
@@ -45,7 +45,7 @@ export class ProductsService {
             throw boom.notFound("Product not found");
         }
 
-        if (product.isBLocked) {
+        if (product.isBlocked) {
             throw boom.conflict("Product is blocked");
         }
 
