@@ -1,13 +1,35 @@
 {
-  "name": "my-store",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+    "name": "my-store",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "node --watch index.js",
+        "start": "node index.js",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "frontend": "http-server ./frontend -p 5050"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "type": "module",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@faker-js/faker": "^10.5.0",
+        "eslint": "^10.6.0",
+        "eslint-config-prettier": "^10.1.8",
+        "globals": "^17.7.0",
+        "http-server": "^14.1.1",
+        "prettier": "^3.9.3"
+    },
+    "dependencies": {
+        "@hapi/boom": "^10.0.1",
+        "cors": "^2.8.6",
+        "express": "^5.2.1",
+        "joi": "^18.2.3"
+    }
 }
