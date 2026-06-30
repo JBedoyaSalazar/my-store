@@ -24,17 +24,24 @@ router.get("/filter", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    const product = true;
-    if (product) {
-        res.json({ message: "Product found" });
-    } else {
-        res.status(404).json({ message: "Product not found" });
+    const { id } = req.params;
+
+    if(id === "999"){
+        res.status(404).json({
+            message: "Product not found"
+        });
+    }else {
+        res.json({
+            message: "Product found",
+            price: "Simulated price",
+            id
+        });
     }
 });
 
 router.post("/", (req, res) => {
     const {name, price, image} = req.body;
-    res.json({
+    res.status(201).json({
         message: "Product created",
         data: {
             id: faker.number.int(),
