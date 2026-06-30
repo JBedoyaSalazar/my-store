@@ -1,12 +1,23 @@
 import { faker } from "@faker-js/faker";
 import boom from "@hapi/boom";
 
+/**
+ * Servicio en memoria para administrar productos de ejemplo.
+ */
 export class ProductsService {
+    /**
+     * Inicializa la colección y genera productos sintéticos.
+     */
     constructor() {
         this.products = [];
         this.generate();
     }
 
+    /**
+     * Genera productos falsos y los agrega a la colección interna.
+     *
+     * @returns {void}
+     */
     generate() {
         const limit = 100;
 
@@ -21,6 +32,12 @@ export class ProductsService {
         }
     }
 
+    /**
+     * Crea un producto nuevo en memoria.
+     *
+     * @param {{ name: string, price: number, image: string }} data - Datos del producto.
+     * @returns {Promise<{ id: string, name: string, price: number, image: string }>} Producto creado.
+     */
     async create(data) {
         const newProduct = {
             id: faker.string.uuid(),
@@ -30,6 +47,11 @@ export class ProductsService {
         return newProduct;
     }
 
+    /**
+     * Retorna la colección completa de productos con una demora artificial.
+     *
+     * @returns {Promise<Array<object>>} Lista de productos en memoria.
+     */
     async find() {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -38,6 +60,13 @@ export class ProductsService {
         });
     }
 
+    /**
+     * Busca un producto por identificador y valida su estado.
+     *
+     * @param {string} id - Identificador del producto.
+     * @returns {Promise<object>} Producto encontrado.
+     * @throws {Error} Cuando el producto no existe o está bloqueado.
+     */
     async findOne(id) {
         const product = this.products.find((product) => product.id === id);
 
@@ -52,6 +81,14 @@ export class ProductsService {
         return product;
     }
 
+    /**
+     * Actualiza parcialmente un producto existente.
+     *
+     * @param {string} id - Identificador del producto.
+     * @param {Partial<{ name: string, price: number, image: string, isBlocked: boolean }>} data - Datos a combinar.
+     * @returns {Promise<object>} Producto actualizado.
+     * @throws {Error} Cuando el producto no existe.
+     */
     async update(id, data) {
         const productIndex = this.products.findIndex((product) => product.id === id);
         if (productIndex !== -1) {
@@ -61,6 +98,13 @@ export class ProductsService {
         throw boom.notFound("Product not found");
     }
 
+    /**
+     * Elimina un producto existente de la colección.
+     *
+     * @param {string} id - Identificador del producto.
+     * @returns {Promise<object>} Producto eliminado.
+     * @throws {Error} Cuando el producto no existe.
+     */
     async delete(id) {
         const productIndex = this.products.findIndex((product) => product.id === id);
         if (productIndex !== -1) {

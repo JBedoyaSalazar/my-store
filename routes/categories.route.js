@@ -2,13 +2,24 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/:id/products/:productId", (req, res) => {
-    const { id, productId } = req.params;
-    res.json({
-        id,
-        productId,
-        message: "Recibiendo varios parametros con la misma ruta",
-    });
+/**
+ * Devuelve `limit` y `offset` cuando ambos llegan como query params.
+ *
+ * @param {import('express').Request} req - Objeto de petición HTTP.
+ * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @returns {void}
+ */
+router.get("/", (req, res) => {
+    const { limit, offset } = req.query;
+
+    if (limit && offset) {
+        res.json({
+            limit,
+            offset,
+        });
+    } else {
+        res.send("No se recibieron parametros tipo query");
+    }
 });
 
 export { router };

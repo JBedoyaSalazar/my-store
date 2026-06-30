@@ -1,5 +1,10 @@
 const API_URL = "http://localhost:3000/api/v1/products";
 
+/**
+ * Consulta la API de productos y muestra el resultado en la consola.
+ *
+ * @returns {Promise<void>}
+ */
 async function getProducts() {
     try {
         const response = await fetch(API_URL);

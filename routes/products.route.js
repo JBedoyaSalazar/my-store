@@ -10,11 +10,26 @@ import {
 const productsService = new ProductsService();
 const router = express.Router();
 
+/**
+ * Obtiene la colección completa de productos desde el servicio en memoria.
+ *
+ * @param {import('express').Request} req - Objeto de petición HTTP.
+ * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>}
+ */
 router.get("/", async (req, res) => {
     const products = await productsService.find();
     res.json(products);
 });
 
+/**
+ * Obtiene un producto por identificador y devuelve un mensaje de confirmación con los datos.
+ *
+ * @param {import('express').Request} req - Objeto de petición HTTP.
+ * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @param {import('express').NextFunction} next - Función para delegar errores.
+ * @returns {Promise<void>}
+ */
 router.get("/:id", validatorHandler(getProductSchema, "params"), async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -28,6 +43,13 @@ router.get("/:id", validatorHandler(getProductSchema, "params"), async (req, res
     }
 });
 
+/**
+ * Crea un producto nuevo en la colección en memoria.
+ *
+ * @param {import('express').Request} req - Objeto de petición HTTP.
+ * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>}
+ */
 router.post("/", validatorHandler(createProductSchema, "body"), async (req, res) => {
     const { name, price, image } = req.body;
     const newProduct = await productsService.create({ name, price, image });
@@ -57,6 +79,14 @@ router.patch(
     }
 );
 
+/**
+ * Elimina un producto existente por identificador.
+ *
+ * @param {import('express').Request} req - Objeto de petición HTTP.
+ * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @param {import('express').NextFunction} next - Función para delegar errores.
+ * @returns {Promise<void>}
+ */
 router.delete("/:id", validatorHandler(getProductSchema, "params"), async (req, res, next) => {
     try {
         const { id } = req.params;
