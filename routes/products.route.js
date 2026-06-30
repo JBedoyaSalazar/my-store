@@ -1,7 +1,11 @@
 import express from "express";
 import { ProductsService } from "../services/product.service.js";
 import { validatorHandler } from "../middlewares/validator.handler.js";
-import { createProductSchema, updateProductSchema, getProductSchema } from "../schemas/product.schema.js";
+import {
+    createProductSchema,
+    updateProductSchema,
+    getProductSchema,
+} from "../schemas/product.schema.js";
 
 const productsService = new ProductsService();
 const router = express.Router();
@@ -33,23 +37,25 @@ router.post("/", validatorHandler(createProductSchema, "body"), async (req, res)
     });
 });
 
-router.patch("/:id",
+router.patch(
+    "/:id",
     validatorHandler(getProductSchema, "params"),
     validatorHandler(updateProductSchema, "body"),
     async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const body = req.body;
+        try {
+            const { id } = req.params;
+            const body = req.body;
 
-        const updatedProduct = await productsService.update(id, body);
-        res.json({
-            message: "Product updated",
-            data: updatedProduct,
-        });
-    } catch (error) {
-        next(error);
+            const updatedProduct = await productsService.update(id, body);
+            res.json({
+                message: "Product updated",
+                data: updatedProduct,
+            });
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.delete("/:id", validatorHandler(getProductSchema, "params"), async (req, res, next) => {
     try {
