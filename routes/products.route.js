@@ -1,73 +1,63 @@
 import express from "express";
-import { faker } from "@faker-js/faker";
+import { ProductsService } from "../services/product.service.js";
 
+const productsService = new ProductsService();
 const router = express.Router()
 
-router.get("/", (req, res) => {
-    const products = [];
-    const { size } = req.query;
-    const limit = size || 10;
-
-    for (let i = 0; i < limit; i++) {
-        products.push({
-            name: faker.commerce.productName(),
-            price: parseFloat(faker.commerce.price()),
-            image: faker.image.url(),
-        });
-    }
-
-    res.json(products);
+router.get("/", async (req, res) => {
+    const products = await productsService.find();
+    res.json(products)
 });
 
-router.get("/filter", (req, res) => {
-    res.send("Yo soy un filter");
-});
-
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
     const { id } = req.params;
-
-    if(id === "999"){
-        res.status(404).json({
-            message: "Product not found"
-        });
-    }else {
-        res.json({
-            message: "Product found",
-            price: "Simulated price",
-            id
-        });
-    }
+    const product = await productsService.findOne(id);
+    res.json({
+        message: "Product retrieved",
+        data: product
+    })
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     const {name, price, image} = req.body;
+    const newProduct = await productsService.create({name, price, image});
     res.status(201).json({
         message: "Product created",
-        data: {
-            id: faker.number.int(),
-            name,
-            price,
-            image
-        },
+        data: newProduct
     })
 })
 
-router.patch("/:id", (req, res) => {
-    const { id } = req.params
-    const body = req.body;
-    res.json({
-        message: "Product updated",
-        data: body,
-        id
-    })
+router.patch("/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const body = req.body;
+
+        const updatedProduct = await productsService.update(id, body);
+        res.json({
+            message: "Product updated",
+            data: updatedProduct
+        })
+    } catch (error) {
+        res.status(404).json({
+            error: error.message
+        })
+    }
+
 })
 
-router.delete("/:id", (req, res) => {
-    const { id } = req.params
-    res.json({
-        message: "Product deleted",
-        id
-    })
+router.delete("/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const deletedProduct = await productsService.delete(id);
+        res.json({
+            message: "Product deleted",
+            data: deletedProduct
+        })
+    } catch (error) {
+        res.status(404).json({
+            error: error.message
+        })
+    }
 })
 
 export  {router};
